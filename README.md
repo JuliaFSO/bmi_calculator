@@ -22,6 +22,6 @@ This application calculates BMI (Body Mass Index) based on user-provided height 
 - `bmi_calculator.py`: Main application script.
 - `bmi_data.txt`: Data file storing user information and BMI results.
 
-## Screenshots
+## Screenshot
 
 ![bmi_calculator](https://github.com/JuliaFSO/bmi_calculator/assets/81381511/c49140a4-dfdb-4f6c-ba53-8400bf9626c8)
