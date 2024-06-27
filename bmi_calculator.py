@@ -1,8 +1,8 @@
 import tkinter
-from tkinter import ttk
 from tkinter import messagebox
 from matplotlib import pyplot as plt
 import tkinter.font as tkFont
+from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
 
 
@@ -49,6 +49,14 @@ def save_data(name, age, height, weight, res):
     with open('bmi_data.txt', 'a') as fwrite:
         fwrite.write(f'{name}, {age}, {height}, {weight}, {res}\n')
     print('Saved')
+    clear_input()
+
+
+def clear_input():
+    nameEntry.delete(0, tkinter.END)
+    agesPinBox.delete(0, tkinter.END)
+    heightEntry.delete(0, tkinter.END)
+    weightEntry.delete(0, tkinter.END)
 
 
 def show_chart():
@@ -69,28 +77,28 @@ def show_chart():
         bmi_list.count('Obesity')
     ]
 
-    chart_window = tkinter.Toplevel(window)
-    chart_window.title('BMI Distribution Chart')
-
-    fig, ax = plt.subplots()
+    fig = Figure(figsize=(6, 6), dpi=100)
+    ax = fig.add_subplot(111)
     ax.pie(counts, colors=colors, autopct='%1.1f%%')
-    plt.title('BMI Distribution')
-    plt.legend(['Underweight', 'Normal weight', 'Overweight', 'Obesity'], loc='lower right')
-    plt.show()
+    ax.set_title('BMI Distribution')
+    ax.legend(['Underweight', 'Normal weight', 'Overweight', 'Obesity'], loc='lower right')
 
-    canvas = FigureCanvasTkAgg(fig, master=chart_window)
+    canvas = FigureCanvasTkAgg(fig, master=graph_frame)
     canvas.draw()
-    canvas.get_tk_widget().pack(fill=tkinter.BOTH, expand=True)
+    canvas.get_tk_widget().pack()
 
 
 window = tkinter.Tk()
 window.title('BMI Calculator')
 
 frame = tkinter.Frame(window)
-frame.pack()
+frame.grid(row=0, column=0, padx=20, pady=20, sticky='n')
+
+graph_frame = tkinter.LabelFrame(window, text="BMI Distribution")
+graph_frame.grid(row=0, column=1, padx=10, pady=10, sticky='nsew')
 
 info_frame = tkinter.LabelFrame(frame, text='Information')
-info_frame.grid(row=0, column=0, padx=20, pady=20, sticky='nsew')
+info_frame.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
 
 nameLabel = tkinter.Label(info_frame, text='Name: ')
 nameLabel.grid(row=0, column=0, pady=5, padx=2, sticky='w')
@@ -123,7 +131,7 @@ bold_font = tkFont.Font(family="Helvetica", size=12, weight="bold")
 bmi_result = tkinter.Label(bmiResults, text=f'BMI: ', font=bold_font)
 bmi_result.grid(row=4, column=0, padx=20, pady=20)
 
-showChartBtn = tkinter.Button(frame, text='Show Chart', command=show_chart)
+showChartBtn = tkinter.Button(frame, text='Show Graph', command=show_chart)
 showChartBtn.grid(row=5, column=0, pady=5, padx=20, sticky='w')
 
 window.mainloop()
